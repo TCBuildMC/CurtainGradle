@@ -1,0 +1,81 @@
+plugins {
+    id "java-library"
+    id "groovy"
+    id "com.gradle.plugin-publish" version "1.2.1" apply false
+}
+
+allprojects {
+    apply plugin: "java-library"
+    apply plugin: "groovy"
+
+    group = rootProject.maven_group
+    version = rootProject.release_version
+
+    base {
+        archivesName = project.artifactId
+    }
+
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+
+        withSourcesJar()
+    }
+
+    tasks.withType(JavaCompile).configureEach { tsk ->
+        tsk.options.release = 8
+        tsk.options.encoding = "UTF-8"
+    }
+
+    tasks.withType(GroovyCompile).configureEach { tsk ->
+        tsk.options.encoding = "UTF-8"
+    }
+
+    tasks.withType(Test).configureEach { tsk ->
+        tsk.systemProperty "file.encoding", "UTF-8"
+    }
+
+    jar {
+        manifest {
+            attributes "Implementation-Version": project.version
+        }
+    }
+
+    compileJava.dependsOn clean
+}
+
+subprojects {
+    apply plugin: "com.gradle.plugin-publish"
+
+    dependencies {
+        annotationProcessor(compileOnly("org.projectlombok:lombok:1.18.32"))
+
+        implementation gradleApi()
+        implementation localGroovy()
+
+
+        testImplementation platform('org.junit:junit-bom:5.10.0')
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+
+        testAnnotationProcessor(testCompileOnly("org.projectlombok:lombok:1.18.32"))
+
+        testImplementation gradleApi()
+        testImplementation localGroovy()
+    }
+
+    test {
+        useJUnitPlatform()
+
+        ignoreFailures true
+
+        testLogging {
+            exceptionFormat = "full"
+            events "passed", "skipped", "failed"
+        }
+    }
+}

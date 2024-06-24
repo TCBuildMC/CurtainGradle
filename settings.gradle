@@ -1,0 +1,13 @@
+def hg_projects = [
+        ":core",
+        ":description",
+        ":publish",
+        ":publish:hangar",
+        ":runserver"
+]
+
+rootProject.name = "HorizontalGradle"
+
+hg_projects.forEach { p ->
+    include p
+}
