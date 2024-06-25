@@ -15,7 +15,7 @@ class CorePlugin implements Plugin<Project> {
     void apply(Project p) {
         p.pluginManager.apply(JavaLibraryPlugin)
 
-        def ext = p.extensions.create("horizontalGradle", CoreExtension, p)
+        def ext = p.extensions.create("horizontalGradleCore", CoreExtension, p)
 
         setupJava(p, ext.targetLanguageVersion)
     }

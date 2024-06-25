@@ -13,16 +13,16 @@ class RunServerPlugin implements Plugin<Project> {
         def serverRuntimePlugins = project.configurations.maybeCreate "serverRuntimePlugins"
 
         def runServer = project.tasks.register("runServer", RunServerTask) {
-            jarPath = new File("${project.rootDir}/run")
+            jarPath = new File("${project.projectDir}/run")
             jarName = "server.jar"
         }
 
         def runServerWithArtifact = project.tasks.register("runServerWithArtifact", RunServerTask) {
             dependsOn project.tasks.named(JavaPlugin.JAR_TASK_NAME).get()
-            jarPath = new File("${project.rootDir}/run")
+            jarPath = new File("${project.projectDir}/run")
             jarName = "server.jar"
 
-            runWithArtifact = true
+            withArtifact = true
         }
     }
 }

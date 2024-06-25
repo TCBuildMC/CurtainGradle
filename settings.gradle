@@ -1,6 +1,6 @@
 def hg_projects = [
         ":core",
-        ":description",
+        ":metadata",
         ":runserver"
 ]
 
