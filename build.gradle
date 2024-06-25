@@ -78,4 +78,9 @@ subprojects {
             events "passed", "skipped", "failed"
         }
     }
+
+    gradlePlugin {
+        website = "https://github.com/TCBuildMC/HorizontalGradle"
+        vcsUrl = "https://github.com/TCBuildMC/HorizontalGradle"
+    }
 }
