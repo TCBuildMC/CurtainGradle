@@ -17,7 +17,6 @@ class MetadataPlugin implements Plugin<Project> {
 
             meta = ext.bukkitMetadata
             resourceDir = p.projectDir.toPath().resolve("src").resolve(ext.sourceSet).resolve("resources").toFile()
-            librariesConfiguration = bukkitLibraries
         }
     }
 }
