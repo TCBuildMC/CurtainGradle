@@ -1,4 +1,4 @@
-package xyz.tcbuildmc.gradle.minecraft.horizontal_gradle.core
+package xyz.tcbuildmc.gradle.minecraft.horizontalgradle.core
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project

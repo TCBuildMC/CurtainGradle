@@ -1,4 +1,4 @@
-package xyz.tcbuildmc.gradle.minecraft.horizontal_gradle.runserver.util
+package xyz.tcbuildmc.gradle.minecraft.horizontalgradle.runserver.util
 
 import org.apache.commons.io.FileUtils
 import org.junit.jupiter.api.Test

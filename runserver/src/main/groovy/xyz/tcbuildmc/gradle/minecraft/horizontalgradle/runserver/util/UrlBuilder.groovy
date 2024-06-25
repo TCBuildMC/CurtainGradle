@@ -1,4 +1,4 @@
-package xyz.tcbuildmc.gradle.minecraft.horizontal_gradle.runserver.util
+package xyz.tcbuildmc.gradle.minecraft.horizontalgradle.runserver.util
 
 import com.fasterxml.jackson.databind.json.JsonMapper
 

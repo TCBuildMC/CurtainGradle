@@ -1,9 +1,9 @@
-package xyz.tcbuildmc.gradle.minecraft.horizontal_gradle.runserver
+package xyz.tcbuildmc.gradle.minecraft.horizontalgradle.runserver
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
-import xyz.tcbuildmc.gradle.minecraft.horizontal_gradle.runserver.task.RunServerTask
+import xyz.tcbuildmc.gradle.minecraft.horizontalgradle.runserver.task.RunServerTask
 
 class RunServerPlugin implements Plugin<Project> {
     @Override
