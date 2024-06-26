@@ -53,4 +53,4 @@ jobs:
         with:
           name: HorizontalGradle-${{ steps.prop_info.outputs.release_version }}-${{ env.SHORT_SHA }}
           path: |
-           runserver/build/libs
+           build/libs
