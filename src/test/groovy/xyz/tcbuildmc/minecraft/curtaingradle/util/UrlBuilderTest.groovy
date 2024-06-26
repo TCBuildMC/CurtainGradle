@@ -1,4 +1,4 @@
-package xyz.tcbuildmc.minecraft.curtainlib.gradle.util
+package xyz.tcbuildmc.minecraft.curtaingradle.util
 
 import org.junit.jupiter.api.Test
 

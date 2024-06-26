@@ -1,4 +1,4 @@
-package xyz.tcbuildmc.minecraft.curtainlib.gradle.extension
+package xyz.tcbuildmc.minecraft.curtaingradle.extension
 
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository

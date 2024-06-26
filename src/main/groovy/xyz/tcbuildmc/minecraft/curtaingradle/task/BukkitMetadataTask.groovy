@@ -1,6 +1,6 @@
-package xyz.tcbuildmc.minecraft.curtainlib.gradle.task
+package xyz.tcbuildmc.minecraft.curtaingradle.task
 
-import xyz.tcbuildmc.minecraft.curtainlib.gradle.CurtainGradleExtension
+import xyz.tcbuildmc.minecraft.curtaingradle.CurtainGradleExtension
 
 class BukkitMetadataTask extends AbstractMetadataTask {
     @Override

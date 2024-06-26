@@ -1,8 +1,8 @@
-package xyz.tcbuildmc.minecraft.curtainlib.gradle
+package xyz.tcbuildmc.minecraft.curtaingradle
 
 import org.gradle.api.Project
-import xyz.tcbuildmc.minecraft.curtainlib.gradle.extension.Metadata
-import xyz.tcbuildmc.minecraft.curtainlib.gradle.extension.Repositories
+import xyz.tcbuildmc.minecraft.curtaingradle.extension.Metadata
+import xyz.tcbuildmc.minecraft.curtaingradle.extension.Repositories
 
 class CurtainGradleExtension {
     private final Project project

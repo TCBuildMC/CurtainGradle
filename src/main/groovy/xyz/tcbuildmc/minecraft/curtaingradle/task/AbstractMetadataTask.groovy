@@ -1,4 +1,4 @@
-package xyz.tcbuildmc.minecraft.curtainlib.gradle.task
+package xyz.tcbuildmc.minecraft.curtaingradle.task
 
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper

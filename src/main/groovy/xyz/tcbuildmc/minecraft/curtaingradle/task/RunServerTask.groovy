@@ -1,4 +1,4 @@
-package xyz.tcbuildmc.minecraft.curtainlib.gradle.task
+package xyz.tcbuildmc.minecraft.curtaingradle.task
 
 import org.apache.commons.io.FileUtils
 import org.gradle.api.DefaultTask
@@ -11,7 +11,7 @@ import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.bundling.AbstractArchiveTask
-import xyz.tcbuildmc.minecraft.curtainlib.gradle.util.ArtifactType
+import xyz.tcbuildmc.minecraft.curtaingradle.util.ArtifactType
 
 class RunServerTask extends DefaultTask {
     // 基本功能

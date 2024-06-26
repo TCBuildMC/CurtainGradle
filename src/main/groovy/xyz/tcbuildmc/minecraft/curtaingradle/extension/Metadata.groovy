@@ -1,8 +1,8 @@
-package xyz.tcbuildmc.minecraft.curtainlib.gradle.extension
+package xyz.tcbuildmc.minecraft.curtaingradle.extension
 
 import org.jetbrains.annotations.ApiStatus
-import xyz.tcbuildmc.minecraft.curtainlib.gradle.util.BasePermission
-import xyz.tcbuildmc.minecraft.curtainlib.gradle.util.PluginLoadOrder
+import xyz.tcbuildmc.minecraft.curtaingradle.util.BasePermission
+import xyz.tcbuildmc.minecraft.curtaingradle.util.PluginLoadOrder
 
 class Metadata {
     def bukkitMetadata = new LinkedHashMap<String, Object>()

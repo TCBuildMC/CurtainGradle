@@ -33,6 +33,10 @@ dependencies {
     testImplementation localGroovy()
 }
 
+processResources {
+    duplicatesStrategy DuplicatesStrategy.INCLUDE
+}
+
 test {
     useJUnitPlatform()
 
@@ -75,4 +79,13 @@ compileJava.dependsOn clean
 gradlePlugin {
     website = "https://github.com/TCBuildMC/CurtainGradle"
     vcsUrl = "https://github.com/TCBuildMC/CurtainGradle"
+    plugins {
+        create("CurtainGradle") {
+            id = "io.github.tcbuildmc.curtaingradle"
+            displayName = "Curtain Gradle"
+            description = "Gradle toolchain for minecraft plugin development."
+            implementationClass = "xyz.tcbuildmc.minecraft.curtaingradle.CurtainGradlePlugin"
+            tags = ["minecraft"]
+        }
+    }
 }
