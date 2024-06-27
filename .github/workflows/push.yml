@@ -51,6 +51,6 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: HorizontalGradle-${{ steps.prop_info.outputs.release_version }}-${{ env.SHORT_SHA }}
+          name: CurtainGradle-${{ steps.prop_info.outputs.release_version }}-${{ env.SHORT_SHA }}
           path: |
            build/libs

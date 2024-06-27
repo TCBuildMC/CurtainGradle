@@ -43,10 +43,6 @@ class CurtainGradlePlugin implements Plugin<Project> {
         project.extensions.configure(JavaPluginExtension) { e ->
             e.sourceCompatibility = version
             e.targetCompatibility = version
-
-            e.toolchain { t ->
-                t.languageVersion.set JavaLanguageVersion.of(version)
-            }
         }
 
         project.tasks.withType(JavaCompile).configureEach { t ->
