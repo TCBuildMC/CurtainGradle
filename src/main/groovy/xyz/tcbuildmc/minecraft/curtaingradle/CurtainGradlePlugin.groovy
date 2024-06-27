@@ -40,26 +40,26 @@ class CurtainGradlePlugin implements Plugin<Project> {
     }
 
     private void setupJavaVersion(Project project, int version) {
-        project.extensions.configure(JavaPluginExtension) {
-            sourceCompatibility = version
-            targetCompatibility = version
+        project.extensions.configure(JavaPluginExtension) { e ->
+            e.sourceCompatibility = version
+            e.targetCompatibility = version
 
-            toolchain {
-                languageVersion.set JavaLanguageVersion.of(version)
+            e.toolchain { t ->
+                t.languageVersion.set JavaLanguageVersion.of(version)
             }
         }
 
-        project.tasks.withType(JavaCompile).configureEach {
-            options.release.set version
-            options.encoding = "UTF-8"
+        project.tasks.withType(JavaCompile).configureEach { t ->
+            t.options.release.set version
+            t.options.encoding = "UTF-8"
         }
 
-        project.tasks.withType(Test).configureEach {
-            systemProperty "file.encoding", "UTF-8"
+        project.tasks.withType(Test).configureEach { t ->
+            t.systemProperty "file.encoding", "UTF-8"
 
-            ignoreFailures = true
+            t.ignoreFailures = true
 
-            testLogging {
+            t.testLogging {
                 exceptionFormat = "full"
                 events "passed", "skipped", "failed"
             }
