@@ -104,7 +104,7 @@ class RunServerTask extends DefaultTask {
     List<Configuration> runtimePluginsConfigurations = [project.configurations.named("serverRuntimePlugins").get()]
 
     RunServerTask() {
-        this.group = "HorizontalGradle"
+        this.group = "curtainGradle"
         this.description = "Launch Minecraft Server for development environment."
     }
 

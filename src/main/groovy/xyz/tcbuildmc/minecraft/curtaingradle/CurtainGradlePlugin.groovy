@@ -8,7 +8,6 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
-import org.gradle.jvm.toolchain.JavaLanguageVersion
 import xyz.tcbuildmc.minecraft.curtaingradle.task.RunServerTask
 
 class CurtainGradlePlugin implements Plugin<Project> {

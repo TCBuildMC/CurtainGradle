@@ -20,6 +20,11 @@ abstract class AbstractMetadataTask extends DefaultTask {
     @Optional
     String sourceSet = "main"
 
+    AbstractMetadataTask() {
+        this.group = "curtainGradle"
+        this.description = "Generate Metadata file when building project."
+    }
+
     @TaskAction
     final void execute() {
         def metadataFile = new File(project.projectDir
