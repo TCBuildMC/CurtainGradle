@@ -1,9 +1,7 @@
 plugins {
     id "java-library"
-    id "java-gradle-plugin"
     id "groovy"
     id "maven-publish"
-    id "com.gradle.plugin-publish" version "1.2.1"
 }
 
 group = project.maven_group
@@ -75,17 +73,3 @@ jar {
 }
 
 compileJava.dependsOn clean
-
-gradlePlugin {
-    website = "https://github.com/TCBuildMC/CurtainGradle"
-    vcsUrl = "https://github.com/TCBuildMC/CurtainGradle"
-    plugins {
-        create("CurtainGradle") {
-            id = "io.github.tcbuildmc.curtaingradle"
-            displayName = "Curtain Gradle"
-            description = "Gradle toolchain for minecraft plugin development."
-            implementationClass = "xyz.tcbuildmc.minecraft.curtaingradle.CurtainGradlePlugin"
-            tags = ["minecraft"]
-        }
-    }
-}

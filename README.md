@@ -17,9 +17,9 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.github.TCBuildMC.CurtainGradle:io.github.tcbuildmc.curtaingradle.gradle.plugin:<commit>"
+        classpath "com.github.TCBuildMC:CurtainGradle:<commit>"
     }
 }
 
-apply plugin: "io.github.tcbuildmc.curtaingradle"
+apply plugin: "xyz.tcbuildmc.minecraft.curtaingradle"
 ```
