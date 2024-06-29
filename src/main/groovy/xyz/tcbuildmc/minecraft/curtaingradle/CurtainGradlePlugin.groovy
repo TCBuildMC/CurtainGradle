@@ -111,11 +111,9 @@ class CurtainGradlePlugin implements Plugin<Project> {
     }
 
     private void setupIdea(Project project) {
-        project.extensions.configure(IdeaModel) {
-            module {
-                downloadSources = true
-                downloadJavadoc = true
-            }
+        project.extensions.getByType(IdeaModel).module {
+            downloadJavadoc = true
+            downloadSources = true
         }
     }
 }
