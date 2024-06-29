@@ -103,9 +103,9 @@ class CurtainGradlePlugin implements Plugin<Project> {
         project.dependencies.add "compileOnly", project.dependencies.localGroovy()
     }
 
-    private void setupKotlin(Project project, int version) {
+    private void setupKotlin(Project project, String version) {
         project.tasks.withType(KotlinCompile).configureEach { t ->
-            t.kotlinOptions.jvmTarget = version.toString()
+            t.kotlinOptions.jvmTarget = version
         }
 
         project.dependencies.add "implementation", project.dependencies.create(
