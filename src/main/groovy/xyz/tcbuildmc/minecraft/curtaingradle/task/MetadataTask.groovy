@@ -7,12 +7,12 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 
-class MetadataTask extends DefaultTask {
+abstract class MetadataTask extends DefaultTask {
     @Input
-    String fileName
+    abstract String getFileName()
 
     @Input
-    Map<String, Object> meta
+    abstract Map<String, Object> getMeta()
 
     @Input
     @Optional
