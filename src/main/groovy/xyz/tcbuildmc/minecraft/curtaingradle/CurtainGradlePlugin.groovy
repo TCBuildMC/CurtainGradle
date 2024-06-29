@@ -51,7 +51,7 @@ class CurtainGradlePlugin implements Plugin<Project> {
             setupGroovy project
         }
 
-        if (project.plugins.hasPlugin(KotlinPluginWrapper)) {
+        if (project.plugins.hasPlugin("org.jetbrains.kotlin.jvm")) {
             setupKotlin project, extension.languageVersion
         }
 
