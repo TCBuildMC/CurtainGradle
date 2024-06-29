@@ -115,6 +115,11 @@ class CurtainGradlePlugin implements Plugin<Project> {
 
         project.dependencies.add "implementation", project.dependencies.create(
                 "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${KotlinPluginWrapperKt.getKotlinPluginVersion(project)}")
+
+        if (k2) {
+            project.setProperty "kotlin.experimental.tryK2", true
+            project.setProperty "kapt.use.k2", true
+        }
     }
 
     private void setupIdea(Project project) {
