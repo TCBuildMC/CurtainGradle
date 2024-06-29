@@ -7,12 +7,13 @@ import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.plugins.scala.ScalaPlugin
 import org.gradle.api.tasks.compile.GroovyCompile
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.api.tasks.scala.ScalaCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.plugins.ide.idea.model.IdeaModel
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapperKt
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import xyz.tcbuildmc.minecraft.curtaingradle.task.MetadataTask
@@ -81,6 +82,10 @@ class CurtainGradlePlugin implements Plugin<Project> {
             if (project.plugins.hasPlugin(GroovyPlugin)) {
                 setupGroovy project
             }
+
+            if (project.plugins.hasPlugin(ScalaPlugin)) {
+                setupScala project, extension.lang.scalaVersion
+            }
         }
     }
 
@@ -115,6 +120,19 @@ class CurtainGradlePlugin implements Plugin<Project> {
 
         project.dependencies.add "implementation", project.dependencies.create(
                 "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${KotlinPluginWrapperKt.getKotlinPluginVersion(project)}")
+    }
+
+    private void setupScala(Project project, String version) {
+        project.tasks.withType(ScalaCompile).configureEach { t ->
+            t.options.encoding = "UTF-8"
+        }
+
+        project.dependencies.add "implementation", project.dependencies.create(
+                "org.scala-lang:scala-library:${version}")
+        project.dependencies.add "implementation", project.dependencies.create(
+                "org.scala-lang:scala-compiler:${version}")
+        project.dependencies.add "implementation", project.dependencies.create(
+                "org.scala-lang:scala-reflect:${version}")
     }
 
     private void setupIdea(Project project) {
