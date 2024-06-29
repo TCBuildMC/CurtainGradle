@@ -12,6 +12,7 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.plugins.ide.idea.model.IdeaModel
+import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapperKt
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import xyz.tcbuildmc.minecraft.curtaingradle.task.MetadataTask
 import xyz.tcbuildmc.minecraft.curtaingradle.task.RunServerTask
@@ -107,7 +108,8 @@ class CurtainGradlePlugin implements Plugin<Project> {
             t.kotlinOptions.jvmTarget = version.toString()
         }
 
-        project.dependencies.add "implementation", project.dependencies.create("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+        project.dependencies.add "implementation", project.dependencies.create(
+                "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${KotlinPluginWrapperKt.getKotlinPluginVersion(project)}")
     }
 
     private void setupIdea(Project project) {
