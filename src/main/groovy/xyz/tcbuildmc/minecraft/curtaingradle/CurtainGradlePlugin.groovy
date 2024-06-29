@@ -3,14 +3,19 @@ package xyz.tcbuildmc.minecraft.curtaingradle
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePlugin
+import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.tasks.compile.GroovyCompile
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
+import org.gradle.plugins.ide.idea.IdeaPlugin
+import org.gradle.plugins.ide.idea.model.IdeaModel
+import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import xyz.tcbuildmc.minecraft.curtaingradle.task.MetadataTask
 import xyz.tcbuildmc.minecraft.curtaingradle.task.RunServerTask
-import xyz.tcbuildmc.minecraft.curtaingradle.task.platform.BukkitMetadataTask
-import xyz.tcbuildmc.minecraft.curtaingradle.task.platform.BungeeCordMetadataTask
 
 class CurtainGradlePlugin implements Plugin<Project> {
     @Override
@@ -22,8 +27,12 @@ class CurtainGradlePlugin implements Plugin<Project> {
         def extension = project.extensions.create "curtainGradle", CurtainGradleExtension, project
 
         def bukkitLibrary = project.configurations.maybeCreate "bukkitLibrary"
-        def bukkitMetadata = project.tasks.register "bukkitMetadata", BukkitMetadataTask
-        def bungeeCordMetadata = project.tasks.register "bungeeCordMetadata", BungeeCordMetadataTask
+        def bukkitMetadata = project.tasks.register("bukkitMetadata", MetadataTask) {
+            fileName = "plugin.yml"
+        }
+        def bungeeCordMetadata = project.tasks.register("bungeeCordMetadata", MetadataTask) {
+            fileName = "bungee.yml"
+        }
 
         def serverRuntimeClasspath = project.configurations.maybeCreate "serverRuntimeClasspath"
         def serverRuntimeMods = project.configurations.maybeCreate "serverRuntimeMods"
@@ -36,7 +45,29 @@ class CurtainGradlePlugin implements Plugin<Project> {
             withArtifact = true
         }
 
-        setupJavaVersion project, extension.languageVersion
+        setupJavaVersion project, extension.languageVersion // afterEvaluate
+
+        if (project.plugins.hasPlugin(GroovyPlugin)) {
+            setupGroovy project
+        }
+
+        if (project.plugins.hasPlugin(KotlinPluginWrapper)) {
+            setupKotlin project, extension.languageVersion
+        }
+
+        if (project.plugins.hasPlugin(IdeaPlugin)) {
+            setupIdea project
+        }
+
+        project.afterEvaluate {
+            bukkitMetadata.configure {
+                meta = extension.metadata.bukkitMetadata
+            }
+
+            bungeeCordMetadata.configure {
+                meta = extension.metadata.bungeeCordMetadata
+            }
+        }
     }
 
     private void setupJavaVersion(Project project, int version) {
@@ -62,5 +93,34 @@ class CurtainGradlePlugin implements Plugin<Project> {
         }
 
         project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME).get().dependsOn(project.tasks.named(BasePlugin.CLEAN_TASK_NAME))
+    }
+
+    private void setupGroovy(Project project) {
+        project.tasks.withType(GroovyCompile).configureEach { t ->
+            t.options.encoding = "UTF-8"
+        }
+
+        project.afterEvaluate {
+            dependencies.add "compileOnly", project.dependencies.localGroovy()
+        }
+    }
+
+    private void setupKotlin(Project project, int version) {
+        project.tasks.withType(KotlinCompile).configureEach { t ->
+            t.kotlinOptions.jvmTarget = version.toString()
+        }
+
+        project.afterEvaluate {
+            dependencies.add "implementation", dependencies.create("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+        }
+    }
+
+    private void setupIdea(Project project) {
+        project.extensions.configure(IdeaModel) {
+            module {
+                downloadSources = true
+                downloadJavadoc = true
+            }
+        }
     }
 }
