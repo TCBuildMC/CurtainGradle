@@ -12,7 +12,6 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.plugins.ide.idea.model.IdeaModel
-import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import xyz.tcbuildmc.minecraft.curtaingradle.task.MetadataTask
 import xyz.tcbuildmc.minecraft.curtaingradle.task.RunServerTask
@@ -45,8 +44,6 @@ class CurtainGradlePlugin implements Plugin<Project> {
             withArtifact = true
         }
 
-        setupJavaVersion project, extension.languageVersion // afterEvaluate
-
         if (project.plugins.hasPlugin(GroovyPlugin)) {
             setupGroovy project
         }
@@ -57,28 +54,6 @@ class CurtainGradlePlugin implements Plugin<Project> {
 
         if (project.plugins.hasPlugin(IdeaPlugin)) {
             setupIdea project
-        }
-
-        project.afterEvaluate {
-            bukkitMetadata.configure {
-                meta = extension.metadata.bukkitMetadata
-            }
-
-            bungeeCordMetadata.configure {
-                meta = extension.metadata.bungeeCordMetadata
-            }
-        }
-    }
-
-    private void setupJavaVersion(Project project, int version) {
-        project.extensions.configure(JavaPluginExtension) { e ->
-            e.sourceCompatibility = version
-            e.targetCompatibility = version
-        }
-
-        project.tasks.withType(JavaCompile).configureEach { t ->
-            t.options.release.set version
-            t.options.encoding = "UTF-8"
         }
 
         project.tasks.withType(Test).configureEach { t ->
@@ -93,6 +68,30 @@ class CurtainGradlePlugin implements Plugin<Project> {
         }
 
         project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME).get().dependsOn(project.tasks.named(BasePlugin.CLEAN_TASK_NAME))
+
+        project.afterEvaluate {
+            bukkitMetadata.configure {
+                meta = extension.metadata.bukkitMetadata
+            }
+
+            bungeeCordMetadata.configure {
+                meta = extension.metadata.bungeeCordMetadata
+            }
+
+            setupJava project, extension.languageVersion
+        }
+    }
+
+    private void setupJava(Project project, int version) {
+        project.extensions.configure(JavaPluginExtension) { e ->
+            e.sourceCompatibility = version
+            e.targetCompatibility = version
+        }
+
+        project.tasks.withType(JavaCompile).configureEach { t ->
+            t.options.release.set version
+            t.options.encoding = "UTF-8"
+        }
     }
 
     private void setupGroovy(Project project) {
