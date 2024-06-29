@@ -47,7 +47,7 @@ abstract class MetadataTask extends DefaultTask {
         }
 
         def libraries = new ArrayList<String>()
-        def librariesConfiguration = project.configurations.named("bukkitLibraries").get()
+        def librariesConfiguration = project.configurations.named("bukkitLibrary").get()
 
         librariesConfiguration.dependencies.forEach { d ->
             libraries.add "${d.group}:${d.name}:${d.version}"

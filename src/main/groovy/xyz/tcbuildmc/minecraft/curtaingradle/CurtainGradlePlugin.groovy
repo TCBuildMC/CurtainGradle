@@ -8,7 +8,6 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
-import xyz.tcbuildmc.minecraft.curtaingradle.task.MetadataTask
 import xyz.tcbuildmc.minecraft.curtaingradle.task.RunServerTask
 import xyz.tcbuildmc.minecraft.curtaingradle.task.platform.BukkitMetadataTask
 import xyz.tcbuildmc.minecraft.curtaingradle.task.platform.BungeeCordMetadataTask
