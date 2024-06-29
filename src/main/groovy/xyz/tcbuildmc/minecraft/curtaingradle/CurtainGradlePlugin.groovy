@@ -10,6 +10,8 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
 import xyz.tcbuildmc.minecraft.curtaingradle.task.MetadataTask
 import xyz.tcbuildmc.minecraft.curtaingradle.task.RunServerTask
+import xyz.tcbuildmc.minecraft.curtaingradle.task.platform.BukkitMetadataTask
+import xyz.tcbuildmc.minecraft.curtaingradle.task.platform.BungeeCordMetadataTask
 
 class CurtainGradlePlugin implements Plugin<Project> {
     @Override
@@ -21,11 +23,8 @@ class CurtainGradlePlugin implements Plugin<Project> {
         def extension = project.extensions.create "curtainGradle", CurtainGradleExtension, project
 
         def bukkitLibrary = project.configurations.maybeCreate "bukkitLibrary"
-        def bukkitMetadata = project.tasks.register "bukkitMetadata", MetadataTask
-        project.tasks.named(JavaPlugin.PROCESS_RESOURCES_TASK_NAME).get().dependsOn bukkitMetadata.get()
-
-        def bungeeCordMetadata = project.tasks.register "bungeeCordMetadata", MetadataTask
-        project.tasks.named(JavaPlugin.PROCESS_RESOURCES_TASK_NAME).get().dependsOn bungeeCordMetadata.get()
+        def bukkitMetadata = project.tasks.register "bukkitMetadata", BukkitMetadataTask
+        def bungeeCordMetadata = project.tasks.register "bungeeCordMetadata", BungeeCordMetadataTask
 
         def serverRuntimeClasspath = project.configurations.maybeCreate "serverRuntimeClasspath"
         def serverRuntimeMods = project.configurations.maybeCreate "serverRuntimeMods"
