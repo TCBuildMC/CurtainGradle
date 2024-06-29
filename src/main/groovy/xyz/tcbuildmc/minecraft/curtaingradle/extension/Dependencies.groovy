@@ -20,4 +20,8 @@ class Dependencies {
     String leavesApi(String version) {
         return "org.leavesmc.leaves:leaves-api:${version}"
     }
+
+    String bungeeCordApi(String version) {
+        return "net.md-5:bungeecord-api:${version}"
+    }
 }

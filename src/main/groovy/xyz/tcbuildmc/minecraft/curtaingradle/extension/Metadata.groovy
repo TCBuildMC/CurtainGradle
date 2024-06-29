@@ -6,25 +6,31 @@ import xyz.tcbuildmc.minecraft.curtaingradle.util.PluginLoadOrder
 
 class Metadata {
     def bukkitMetadata = new LinkedHashMap<String, Object>()
+    def bungeeCordMetadata = new LinkedHashMap<String, Object>()
 
     def name(String name) {
         bukkitMetadata["name"] = name
+        bungeeCordMetadata["name"] = name
     }
 
     def version(String version) {
         bukkitMetadata["version"] = version
+        bungeeCordMetadata["version"] = version
     }
 
     def main(String main) {
         bukkitMetadata["main"] = main
+        bungeeCordMetadata["main"] = main
     }
 
     def description(String description) {
         bukkitMetadata["description"] = description
+        bungeeCordMetadata["description"] = description
     }
 
     def author(String author) {
         bukkitMetadata["author"] = author
+        bungeeCordMetadata["author"] = author
     }
 
     def authors(List<String> authors) {
@@ -58,6 +64,7 @@ class Metadata {
     @ApiStatus.Experimental
     def libraries(List<String> libraries) {
         bukkitMetadata["libraries"] = libraries
+        bungeeCordMetadata["libraries"] = libraries
     }
 
     @ApiStatus.Experimental
@@ -78,10 +85,12 @@ class Metadata {
 
     def depend(List<String> depend) {
         bukkitMetadata["depend"] = depend
+        bungeeCordMetadata["depends"] = depend
     }
 
     def softdepend(List<String> softdepend) {
         bukkitMetadata["softdepend"] = softdepend
+        bungeeCordMetadata["softDepends"] = softdepend
     }
 
     def loadbefore(List<String> loadbefore) {

@@ -103,6 +103,10 @@ class RunServerTask extends DefaultTask {
     @Optional
     List<Configuration> runtimePluginsConfigurations = [project.configurations.named("serverRuntimePlugins").get()]
 
+    @Input
+    @Optional
+    Boolean eula = false
+
     RunServerTask() {
         this.group = "curtainGradle"
         this.description = "Launch Minecraft Server for development environment."
@@ -200,6 +204,13 @@ class RunServerTask extends DefaultTask {
                 c.resolve().forEach { f ->
                     FileUtils.copyFileToDirectory f, new File("${jarPath}/mods")
                 }
+            }
+        }
+
+        if (eula) {
+            def eulaFile = new File(jarPath, "eula.txt")
+            if (!eulaFile.exists() || !eulaFile.readLines().contains("eula=true")) {
+                eulaFile.write("eula=true")
             }
         }
 

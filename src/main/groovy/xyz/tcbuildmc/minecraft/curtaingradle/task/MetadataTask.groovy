@@ -7,20 +7,18 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 
-abstract class AbstractMetadataTask extends DefaultTask {
+class MetadataTask extends DefaultTask {
     @Input
-    @Optional
-    abstract String getFileName()
+    String fileName
 
     @Input
-    @Optional
-    abstract Map<String, Object> getMeta()
+    Map<String, Object> meta
 
     @Input
     @Optional
     String sourceSet = "main"
 
-    AbstractMetadataTask() {
+    MetadataTask() {
         this.group = "curtainGradle"
         this.description = "Generate Metadata file when building project."
     }

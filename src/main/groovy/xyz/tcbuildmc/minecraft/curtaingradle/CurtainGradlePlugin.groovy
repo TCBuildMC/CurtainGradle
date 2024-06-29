@@ -8,6 +8,7 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
+import xyz.tcbuildmc.minecraft.curtaingradle.task.MetadataTask
 import xyz.tcbuildmc.minecraft.curtaingradle.task.RunServerTask
 
 class CurtainGradlePlugin implements Plugin<Project> {
@@ -20,8 +21,17 @@ class CurtainGradlePlugin implements Plugin<Project> {
         def extension = project.extensions.create "curtainGradle", CurtainGradleExtension, project
 
         def bukkitLibrary = project.configurations.maybeCreate "bukkitLibrary"
-        def bukkitMetadata = project.tasks.register("bukkitMetadata") {
+        def bukkitMetadata = project.tasks.register("bukkitMetadata", MetadataTask) {
             dependsOn project.tasks.named(JavaPlugin.PROCESS_RESOURCES_TASK_NAME).get()
+
+            fileName = "plugin.yml"
+            meta = extension.metadata.bukkitMetadata
+        }
+        def bungeeCordMetadata = project.tasks.register("bungeeCordMetadata", MetadataTask) {
+            dependsOn project.tasks.named(JavaPlugin.PROCESS_RESOURCES_TASK_NAME).get()
+
+            fileName = "bungee.yml"
+            meta = extension.metadata.bungeeCordMetadata
         }
 
         def serverRuntimeClasspath = project.configurations.maybeCreate "serverRuntimeClasspath"
