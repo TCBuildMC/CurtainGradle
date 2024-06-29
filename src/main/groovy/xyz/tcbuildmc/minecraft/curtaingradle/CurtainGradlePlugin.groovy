@@ -12,6 +12,7 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.plugins.ide.idea.model.IdeaModel
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapperKt
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import xyz.tcbuildmc.minecraft.curtaingradle.task.MetadataTask
@@ -74,7 +75,7 @@ class CurtainGradlePlugin implements Plugin<Project> {
             setupJava project, extension.lang.jdkVersion
 
             if (project.plugins.hasPlugin("org.jetbrains.kotlin.jvm")) {
-                setupKotlin project, extension.lang.kotlinVersion
+                setupKotlin project, extension.lang.kotlinVersion, extension.lang.k2
             }
 
             if (project.plugins.hasPlugin(GroovyPlugin)) {
@@ -103,9 +104,13 @@ class CurtainGradlePlugin implements Plugin<Project> {
         project.dependencies.add "compileOnly", project.dependencies.localGroovy()
     }
 
-    private void setupKotlin(Project project, String version) {
+    private void setupKotlin(Project project, String version, boolean k2) {
         project.tasks.withType(KotlinCompile).configureEach { t ->
             t.kotlinOptions.jvmTarget = version
+
+            if (k2) {
+                t.kotlinOptions.languageVersion = "2.0"
+            }
         }
 
         project.dependencies.add "implementation", project.dependencies.create(
