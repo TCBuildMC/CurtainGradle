@@ -2,9 +2,9 @@
 
 Gradle toolchain for minecraft plugin development.
 
-# Usage
+## Usage
 
-You can use it via jitpack:
+You can use it via [jitpack](https://jitpack.io/#TCBuildMC/CurtainGradle):
 
 [![](https://jitpack.io/v/TCBuildMC/CurtainGradle.svg)](https://jitpack.io/#TCBuildMC/CurtainGradle)
 

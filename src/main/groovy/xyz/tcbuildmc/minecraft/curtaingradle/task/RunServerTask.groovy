@@ -13,6 +13,7 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.bundling.AbstractArchiveTask
 import xyz.tcbuildmc.minecraft.curtaingradle.util.ArtifactType
 
+// TODO 拆分任务: RunServer + PrepareServerJar
 class RunServerTask extends DefaultTask {
     // 基本功能
     @InputFile
