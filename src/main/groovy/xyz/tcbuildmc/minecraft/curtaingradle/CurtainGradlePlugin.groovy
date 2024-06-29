@@ -23,13 +23,13 @@ class CurtainGradlePlugin implements Plugin<Project> {
         def bukkitLibrary = project.configurations.maybeCreate "bukkitLibrary"
         def bukkitMetadata = project.tasks.register("bukkitMetadata", MetadataTask) {
             fileName = "plugin.yml"
-            meta = extension.metadata.bukkitMetadata
+            meta = extension.metadata.getBukkitMetadata()
         }
         project.tasks.named(JavaPlugin.PROCESS_RESOURCES_TASK_NAME).get().dependsOn bukkitMetadata.get()
 
         def bungeeCordMetadata = project.tasks.register("bungeeCordMetadata", MetadataTask) {
             fileName = "bungee.yml"
-            meta = extension.metadata.bungeeCordMetadata
+            meta = extension.metadata.getBukkitMetadata()
         }
         project.tasks.named(JavaPlugin.PROCESS_RESOURCES_TASK_NAME).get().dependsOn bungeeCordMetadata.get()
 
