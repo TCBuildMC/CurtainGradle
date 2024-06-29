@@ -44,14 +44,6 @@ class CurtainGradlePlugin implements Plugin<Project> {
             withArtifact = true
         }
 
-        if (project.plugins.hasPlugin(GroovyPlugin)) {
-            setupGroovy project
-        }
-
-        if (project.plugins.hasPlugin("org.jetbrains.kotlin.jvm")) {
-            setupKotlin project, extension.languageVersion
-        }
-
         if (project.plugins.hasPlugin(IdeaPlugin)) {
             setupIdea project
         }
@@ -78,7 +70,15 @@ class CurtainGradlePlugin implements Plugin<Project> {
                 meta = extension.metadata.bungeeCordMetadata
             }
 
-            setupJava project, extension.languageVersion
+            setupJava project, extension.lang.jdkVersion
+
+            if (project.plugins.hasPlugin("org.jetbrains.kotlin.jvm")) {
+                setupKotlin project, extension.lang.kotlinVersion
+            }
+
+            if (project.plugins.hasPlugin(GroovyPlugin)) {
+                setupGroovy project
+            }
         }
     }
 
@@ -99,9 +99,7 @@ class CurtainGradlePlugin implements Plugin<Project> {
             t.options.encoding = "UTF-8"
         }
 
-        project.afterEvaluate {
-            dependencies.add "compileOnly", project.dependencies.localGroovy()
-        }
+        project.dependencies.add "compileOnly", project.dependencies.localGroovy()
     }
 
     private void setupKotlin(Project project, int version) {
@@ -109,15 +107,15 @@ class CurtainGradlePlugin implements Plugin<Project> {
             t.kotlinOptions.jvmTarget = version.toString()
         }
 
-        project.afterEvaluate {
-            dependencies.add "implementation", dependencies.create("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-        }
+        project.dependencies.add "implementation", project.dependencies.create("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     }
 
     private void setupIdea(Project project) {
         project.extensions.configure(IdeaModel) {
-            module.downloadJavadoc = true
-            module.downloadSources = true
+            module {
+                downloadSources = true
+                downloadJavadoc = true
+            }
         }
     }
 }

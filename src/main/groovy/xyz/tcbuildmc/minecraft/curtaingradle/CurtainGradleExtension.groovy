@@ -3,6 +3,7 @@ package xyz.tcbuildmc.minecraft.curtaingradle
 import org.gradle.api.Action
 import org.gradle.api.Project
 import xyz.tcbuildmc.minecraft.curtaingradle.extension.Dependencies
+import xyz.tcbuildmc.minecraft.curtaingradle.extension.Lang
 import xyz.tcbuildmc.minecraft.curtaingradle.extension.Metadata
 import xyz.tcbuildmc.minecraft.curtaingradle.extension.Repositories
 
@@ -13,13 +14,17 @@ class CurtainGradleExtension {
         this.project = project
     }
 
-    int languageVersion = 8
+    Lang lang = new Lang()
 
     Repositories repositories = new Repositories(project.repositories)
 
     Metadata metadata = new Metadata()
 
     Dependencies dependencies = new Dependencies()
+
+    def lang(Action<? super Lang> action) {
+        action.execute lang
+    }
 
     def repositories(Action<? super Repositories> action) {
         action.execute repositories
