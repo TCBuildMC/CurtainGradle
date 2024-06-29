@@ -39,9 +39,9 @@ abstract class MetadataTask extends DefaultTask {
         if (!meta.containsKey("name") ||
                 !meta.containsKey("version") ||
                 !meta.containsKey("main") ||
-                !(meta.getOrDefault("name", "") as String).isEmpty() ||
-                !(meta.getOrDefault("version", "") as String).isEmpty() ||
-                !(meta.getOrDefault("main", "") as String).isEmpty()) {
+                (meta.getOrDefault("name", "") as String).isEmpty() ||
+                (meta.getOrDefault("version", "") as String).isEmpty() ||
+                (meta.getOrDefault("main", "") as String).isEmpty()) {
 
             throw new IllegalArgumentException()
         }
