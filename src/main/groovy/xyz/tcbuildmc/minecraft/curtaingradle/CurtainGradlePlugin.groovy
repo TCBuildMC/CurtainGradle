@@ -80,7 +80,7 @@ class CurtainGradlePlugin implements Plugin<Project> {
             }
 
             if (project.plugins.hasPlugin(GroovyPlugin)) {
-                setupGroovy project
+                setupGroovy project, extension.lang.groovyVersion, extension.lang.groovy4
             }
 
             if (project.plugins.hasPlugin(ScalaPlugin)) {
@@ -101,12 +101,22 @@ class CurtainGradlePlugin implements Plugin<Project> {
         }
     }
 
-    private void setupGroovy(Project project) {
+    private void setupGroovy(Project project, String version, boolean groovy4) {
         project.tasks.withType(GroovyCompile).configureEach { t ->
             t.options.encoding = "UTF-8"
         }
 
-        project.dependencies.add "compileOnly", project.dependencies.localGroovy()
+        if (version == null) {
+            project.dependencies.add "implementation", project.dependencies.localGroovy()
+        } else {
+            if (groovy4) {
+                project.dependencies.add "implementation", project.dependencies.create(
+                        "org.apache.groovy:groovy-all:${version}")
+            } else {
+                project.dependencies.add "implementation", project.dependencies.create(
+                        "org.codehaus.groovy:groovy-all:${version}")
+            }
+        }
     }
 
     private void setupKotlin(Project project, String version, boolean k2) {
