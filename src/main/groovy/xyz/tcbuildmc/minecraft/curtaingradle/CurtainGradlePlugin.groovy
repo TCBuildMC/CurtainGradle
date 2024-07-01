@@ -15,6 +15,7 @@ import org.gradle.api.tasks.scala.ScalaCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.plugins.ide.idea.model.IdeaModel
+import org.jetbrains.gradle.ext.IdeaExtPlugin
 import org.jetbrains.gradle.ext.TaskTriggersConfig
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapperKt
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -26,6 +27,8 @@ class CurtainGradlePlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.pluginManager.apply JavaLibraryPlugin
+        project.pluginManager.apply IdeaPlugin
+        project.pluginManager.apply IdeaExtPlugin
 
         project.logger.lifecycle "CurtainGradle: ${CurtainGradlePlugin.class.package.implementationVersion}"
         project.logger.lifecycle "by TCBuildMC"
@@ -66,9 +69,7 @@ class CurtainGradlePlugin implements Plugin<Project> {
         project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME).get().dependsOn(project.tasks.named(BasePlugin.CLEAN_TASK_NAME))
 
         project.afterEvaluate {
-            if (project.plugins.hasPlugin(IdeaPlugin)) {
-                setupIdea project, prepareServer.get()
-            }
+            setupIdea project, prepareServer.get()
 
             bukkitMetadata.configure {
                 meta = extension.metadata.bukkitMetadata
@@ -158,8 +159,6 @@ class CurtainGradlePlugin implements Plugin<Project> {
             inheritOutputDirs = true
         }
 
-        if (project.plugins.hasPlugin("org.jetbrains.gradle.plugin.idea-ext")) {
-            project.extensions.getByType(TaskTriggersConfig).afterSync tasks
-        }
+        project.extensions.getByType(TaskTriggersConfig).afterSync tasks
     }
 }
