@@ -15,8 +15,6 @@ import org.gradle.api.tasks.scala.ScalaCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.plugins.ide.idea.model.IdeaModel
-import org.jetbrains.gradle.ext.IdeaExtPlugin
-import org.jetbrains.gradle.ext.TaskTriggersConfig
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapperKt
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import xyz.tcbuildmc.minecraft.curtaingradle.task.MetadataTask
@@ -28,7 +26,6 @@ class CurtainGradlePlugin implements Plugin<Project> {
     void apply(Project project) {
         project.pluginManager.apply JavaLibraryPlugin
         project.pluginManager.apply IdeaPlugin
-        project.pluginManager.apply IdeaExtPlugin
 
         project.logger.lifecycle "CurtainGradle: ${CurtainGradlePlugin.class.package.implementationVersion}"
         project.logger.lifecycle "by TCBuildMC"
@@ -47,10 +44,12 @@ class CurtainGradlePlugin implements Plugin<Project> {
         def serverRuntimeMods = project.configurations.maybeCreate "serverRuntimeMods"
         def serverRuntimePlugins = project.configurations.maybeCreate "serverRuntimePlugins"
         def prepareServer = project.tasks.register "prepareServer", PrepareServerTask
-        def runServer = project.tasks.register "runServer", RunServerTask
+        def runServer = project.tasks.register("runServer", RunServerTask) {
+            dependsOn prepareServer.get()
+        }
 
         def runServerWithArtifact = project.tasks.register("runServerWithArtifact", RunServerTask) {
-            dependsOn project.tasks.named(JavaPlugin.JAR_TASK_NAME).get()
+            dependsOn prepareServer.get(), project.tasks.named(JavaPlugin.JAR_TASK_NAME).get()
 
             withArtifact = true
         }
@@ -158,7 +157,5 @@ class CurtainGradlePlugin implements Plugin<Project> {
             downloadSources = true
             inheritOutputDirs = true
         }
-
-        project.extensions.getByType(TaskTriggersConfig).afterSync tasks
     }
 }
