@@ -2,6 +2,7 @@ package xyz.tcbuildmc.minecraft.curtaingradle
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaLibraryPlugin
@@ -14,9 +15,11 @@ import org.gradle.api.tasks.scala.ScalaCompile
 import org.gradle.api.tasks.testing.Test
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.plugins.ide.idea.model.IdeaModel
+import org.jetbrains.gradle.ext.TaskTriggersConfig
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapperKt
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import xyz.tcbuildmc.minecraft.curtaingradle.task.MetadataTask
+import xyz.tcbuildmc.minecraft.curtaingradle.task.PrepareServerTask
 import xyz.tcbuildmc.minecraft.curtaingradle.task.RunServerTask
 
 class CurtainGradlePlugin implements Plugin<Project> {
@@ -36,19 +39,17 @@ class CurtainGradlePlugin implements Plugin<Project> {
             fileName = "bungee.yml"
         }
 
+        def serverRuntimeAgent = project.configurations.maybeCreate "serverRuntimeAgent"
         def serverRuntimeClasspath = project.configurations.maybeCreate "serverRuntimeClasspath"
         def serverRuntimeMods = project.configurations.maybeCreate "serverRuntimeMods"
         def serverRuntimePlugins = project.configurations.maybeCreate "serverRuntimePlugins"
+        def prepareServer = project.tasks.register "prepareServer", PrepareServerTask
         def runServer = project.tasks.register "runServer", RunServerTask
 
         def runServerWithArtifact = project.tasks.register("runServerWithArtifact", RunServerTask) {
             dependsOn project.tasks.named(JavaPlugin.JAR_TASK_NAME).get()
 
             withArtifact = true
-        }
-
-        if (project.plugins.hasPlugin(IdeaPlugin)) {
-            setupIdea project
         }
 
         project.tasks.withType(Test).configureEach { t ->
@@ -65,6 +66,10 @@ class CurtainGradlePlugin implements Plugin<Project> {
         project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME).get().dependsOn(project.tasks.named(BasePlugin.CLEAN_TASK_NAME))
 
         project.afterEvaluate {
+            if (project.plugins.hasPlugin(IdeaPlugin)) {
+                setupIdea project, prepareServer.get()
+            }
+
             bukkitMetadata.configure {
                 meta = extension.metadata.bukkitMetadata
             }
@@ -145,10 +150,16 @@ class CurtainGradlePlugin implements Plugin<Project> {
                 "org.scala-lang:scala-reflect:${version}")
     }
 
-    private void setupIdea(Project project) {
+    private void setupIdea(Project project, Task... tasks) {
         project.extensions.getByType(IdeaModel).module {
+            excludeDirs.addAll(project.files(".gradle", "build", ".idea", "out").files)
             downloadJavadoc = true
             downloadSources = true
+            inheritOutputDirs = true
+        }
+
+        if (project.plugins.hasPlugin("org.jetbrains.gradle.plugin.idea-ext")) {
+            project.extensions.getByType(TaskTriggersConfig).afterSync tasks
         }
     }
 }

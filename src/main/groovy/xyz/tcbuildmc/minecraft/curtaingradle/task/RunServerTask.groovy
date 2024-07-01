@@ -3,7 +3,6 @@ package xyz.tcbuildmc.minecraft.curtaingradle.task
 import org.apache.commons.io.FileUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -13,7 +12,6 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.bundling.AbstractArchiveTask
 import xyz.tcbuildmc.minecraft.curtaingradle.util.ArtifactType
 
-// TODO 拆分任务: RunServer + PrepareServerJar
 class RunServerTask extends DefaultTask {
     // 基本功能
     @InputFile
@@ -63,46 +61,9 @@ class RunServerTask extends DefaultTask {
     @Optional
     Boolean extraClasspath = false
 
-    @InputFiles
-    @Optional
-    List<File> runtimeClasspath = new ArrayList<>()
-
     @Input
     @Optional
-    List<String> runtimeClasspathUrls = new ArrayList<>()
-
-    @Input
-    @Optional
-    List<Configuration> runtimeClasspathConfigurations = [project.configurations.named("serverRuntimeClasspath").get()]
-
-    // 运行时 mod 或 插件
-    @Input
-    @Optional
-    Boolean extraModsAndPlugins = false
-
-    @InputFiles
-    @Optional
-    List<File> runtimeMods = new ArrayList<>()
-
-    @InputFiles
-    @Optional
-    List<File> runtimePlugins = new ArrayList<>()
-
-    @Input
-    @Optional
-    List<String> runtimeModsUrls = new ArrayList<>()
-
-    @Input
-    @Optional
-    List<String> runtimePluginsUrls = new ArrayList<>()
-
-    @Input
-    @Optional
-    List<Configuration> runtimeModsConfigurations = [project.configurations.named("serverRuntimeMods").get()]
-
-    @Input
-    @Optional
-    List<Configuration> runtimePluginsConfigurations = [project.configurations.named("serverRuntimePlugins").get()]
+    Boolean extraJavaagents = false
 
     @Input
     @Optional
@@ -124,12 +85,12 @@ class RunServerTask extends DefaultTask {
         if (!jarFile.exists()) {
             logger.warn "server jar don't exist"
 
-            if (jarUrl.length() == 0) {
+            if (jarUrl.isEmpty()) {
                 throw new GradleException("server jar url no provided!")
             }
 
             logger.lifecycle "trying downloading ${jarName} from ${jarUrl}..."
-            FileUtils.copyURLToFile(new URI(jarUrl).toURL(), jarFile)
+            FileUtils.copyURLToFile new URI(jarUrl).toURL(), jarFile
         }
 
         // 基本功能
@@ -141,30 +102,37 @@ class RunServerTask extends DefaultTask {
             cmd.add "-javaagent:${f.absolutePath}"
         }
 
-        // -cp
-        runtimeClasspath.forEach { f ->
-            classpath.add f.absolutePath
+        if (extraJavaagents) {
+            def javaagentsPath = new File("${jarPath}/javaagents")
+
+            javaagentsPath.listFiles().toList().forEach { f ->
+                if (!f.isDirectory()) {
+                    cmd.add "-javaagent:${f.absolutePath}"
+                }
+            }
         }
 
         if (extraClasspath) {
-            runtimeClasspathUrls.forEach { s ->
-                def fileName = s.substring(s.lastIndexOf("/") + 1)
-                def destFile = new File("${jarPath}/cp", fileName)
+            def cpPath = new File("${jarPath}/classpaths")
 
-                FileUtils.copyURLToFile(new URI(s).toURL(), destFile)
-                classpath.add destFile.absolutePath
-            }
-
-            runtimeClasspathConfigurations.forEach { c ->
-                c.resolve().forEach { f ->
+            cpPath.listFiles().toList().forEach { f ->
+                if (!f.isDirectory()) {
                     classpath.add f.absolutePath
                 }
             }
         }
 
         if (!classpath.isEmpty()) {
-            cmd.add "--classpath"
-            cmd.addAll classpath
+            def builder = new StringBuilder()
+            builder.append "--classpath "
+
+            classpath.forEach { c ->
+                builder.append c
+                builder.append ";"
+            }
+
+            def s = builder.toString()
+            cmd.add s.substring(0, s.length() - 1)
         }
 
         cmd.addAll "-jar", jarFile.absolutePath
@@ -173,39 +141,6 @@ class RunServerTask extends DefaultTask {
         // 与工件一同运行
         if (withArtifact) {
             FileUtils.copyFileToDirectory buildTask.archiveFile.get().asFile, new File("${jarPath}/${artifactType.name().toLowerCase()}")
-        }
-
-        // 与运行时依赖一同运行
-        if (extraModsAndPlugins) {
-            runtimeMods.forEach { f ->
-                FileUtils.copyFileToDirectory f, new File("${jarPath}/mods")
-            }
-
-            runtimePlugins.forEach { f ->
-                FileUtils.copyFileToDirectory f, new File("${jarPath}/plugins")
-            }
-
-            runtimeModsUrls.forEach { s ->
-                def fileName = s.substring(s.lastIndexOf("/") + 1)
-                FileUtils.copyURLToFile(new URI(s).toURL(), new File("${jarPath}/mods", fileName))
-            }
-
-            runtimePluginsUrls.forEach { s ->
-                def fileName = s.substring(s.lastIndexOf("/") + 1)
-                FileUtils.copyURLToFile(new URI(s).toURL(), new File("${jarPath}/plugins", fileName))
-            }
-
-            runtimeModsConfigurations.forEach { c ->
-                c.resolve().forEach { f ->
-                    FileUtils.copyFileToDirectory f, new File("${jarPath}/mods")
-                }
-            }
-
-            runtimePluginsConfigurations.forEach { c ->
-                c.resolve().forEach { f ->
-                    FileUtils.copyFileToDirectory f, new File("${jarPath}/mods")
-                }
-            }
         }
 
         if (eula) {
