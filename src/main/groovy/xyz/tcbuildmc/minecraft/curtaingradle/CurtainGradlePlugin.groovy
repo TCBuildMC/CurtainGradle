@@ -101,7 +101,7 @@ class CurtainGradlePlugin implements Plugin<Project> {
         }
 
         project.tasks.withType(JavaCompile).configureEach { t ->
-            t.options.release.set version
+            t.options.release = version
             t.options.encoding = "UTF-8"
         }
     }
