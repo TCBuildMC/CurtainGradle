@@ -107,9 +107,9 @@ class CurtainGradlePlugin implements Plugin<Project> {
             e.targetCompatibility = version
         }
 
-        project.tasks.withType(JavaCompile) {
-            options.release.set version
-            options.encoding = "UTF-8"
+        project.tasks.withType(JavaCompile).configureEach { t ->
+//            t.options.release = version // FIXME: GitHub Action 运行失败
+            t.options.encoding = "UTF-8"
         }
     }
 
