@@ -24,4 +24,8 @@ class Dependencies {
     String bungeeCordApi(String version) {
         return "net.md-5:bungeecord-api:${version}"
     }
+
+    String velocityApi(String version) {
+        return "com.velocitypowered:velocity-api:${version}"
+    }
 }

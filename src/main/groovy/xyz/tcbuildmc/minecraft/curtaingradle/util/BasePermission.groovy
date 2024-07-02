@@ -1,18 +1,24 @@
 package xyz.tcbuildmc.minecraft.curtaingradle.util
 
 enum BasePermission {
-    OP("op"),
-    NOT_OP("not op"),
-    TRUE("true"),
-    FALSE("false");
+    OP,
+    NOT_OP,
+    TRUE,
+    FALSE;
 
-    private final String id
-
-    BasePermission(String id) {
-        this.id = id
-    }
-
-    String getId() {
-        return this.id
+    @Override
+    String toString() {
+        switch (this) {
+            case OP:
+                return "op"
+            case NOT_OP:
+                return "not op"
+            case TRUE:
+                return "true"
+            case FALSE:
+                return "false"
+            default:
+                throw new IllegalArgumentException()
+        }
     }
 }

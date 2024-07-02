@@ -36,16 +36,6 @@ class MetadataTask extends DefaultTask {
                 .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)
                 .build()
 
-        if (!meta.containsKey("name") ||
-                !meta.containsKey("version") ||
-                !meta.containsKey("main") ||
-                (meta.getOrDefault("name", "") as String).isEmpty() ||
-                (meta.getOrDefault("version", "") as String).isEmpty() ||
-                (meta.getOrDefault("main", "") as String).isEmpty()) {
-
-            throw new IllegalArgumentException()
-        }
-
         def libraries = new ArrayList<String>()
         def librariesConfiguration = project.configurations.named("bukkitLibrary").get()
 
