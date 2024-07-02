@@ -1,5 +1,6 @@
 package xyz.tcbuildmc.minecraft.curtaingradle.task
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import org.gradle.api.DefaultTask
@@ -32,9 +33,12 @@ class MetadataTask extends DefaultTask {
                 .resolve("resources")
                 .toFile(), fileName)
 
-        def mapper = YAMLMapper.builder()
-                .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)
-                .build()
+        def mapper = new ObjectMapper()
+        if (fileType() == "yml") {
+            mapper = YAMLMapper.builder()
+                    .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)
+                    .build()
+        }
 
         def libraries = new ArrayList<String>()
         def librariesConfiguration = project.configurations.named("bukkitLibrary").get()
@@ -61,5 +65,9 @@ class MetadataTask extends DefaultTask {
         mapper.writer()
                 .withDefaultPrettyPrinter()
                 .writeValue(metadataFile, meta)
+    }
+
+    private String fileType() {
+        return fileName.substring(fileName.lastIndexOf(".") + 1)
     }
 }

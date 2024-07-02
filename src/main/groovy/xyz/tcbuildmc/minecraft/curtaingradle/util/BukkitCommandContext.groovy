@@ -1,10 +1,8 @@
 package xyz.tcbuildmc.minecraft.curtaingradle.util
 
-import lombok.AllArgsConstructor
 import xyz.tcbuildmc.minecraft.curtaingradle.api.MapSerializable
 import xyz.tcbuildmc.minecraft.curtaingradle.api.Property
 
-@AllArgsConstructor
 final class BukkitCommandContext implements MapSerializable {
     private final String description, usage
     private final List<String> aliases
@@ -12,6 +10,14 @@ final class BukkitCommandContext implements MapSerializable {
     @Property("")
     @Property("permission-message")
     private final String permission, permissionMessage
+
+    BukkitCommandContext(String description, String usage, List<String> aliases, String permission, String permissionMessage) {
+        this.description = description
+        this.usage = usage
+        this.aliases = aliases
+        this.permission = permission
+        this.permissionMessage = permissionMessage
+    }
 
     @Override
     Map<String, ?> toMap() {
