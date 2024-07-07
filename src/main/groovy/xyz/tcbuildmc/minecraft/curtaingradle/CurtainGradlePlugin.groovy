@@ -38,9 +38,6 @@ class CurtainGradlePlugin implements Plugin<Project> {
         def bungeeCordMetadata = project.tasks.register("bungeeCordMetadata", MetadataTask) {
             fileName = "bungee.yml"
         }
-        def velocityMetadata = project.tasks.register("velocityMetadata", MetadataTask) {
-            fileName = "velocity-plugin.json"
-        }
 
         def serverRuntimeAgent = project.configurations.maybeCreate "serverRuntimeAgent"
         def serverRuntimeClasspath = project.configurations.maybeCreate "serverRuntimeClasspath"
@@ -79,10 +76,6 @@ class CurtainGradlePlugin implements Plugin<Project> {
 
             bungeeCordMetadata.configure {
                 meta = extension.metadata.bungeeCordMetadata
-            }
-
-            velocityMetadata.configure {
-                meta = extension.metadata.velocityMetadata
             }
 
             setupJava project, extension.lang.jdkVersion

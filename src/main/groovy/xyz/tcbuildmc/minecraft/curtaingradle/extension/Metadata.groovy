@@ -6,39 +6,29 @@ import xyz.tcbuildmc.minecraft.curtaingradle.util.BasePermission
 import xyz.tcbuildmc.minecraft.curtaingradle.util.BukkitCommandContext
 import xyz.tcbuildmc.minecraft.curtaingradle.util.BukkitPermissionContext
 import xyz.tcbuildmc.minecraft.curtaingradle.util.PluginLoadOrder
-import xyz.tcbuildmc.minecraft.curtaingradle.util.VelocityDependency
 
 class Metadata {
     def bukkitMetadata = new LinkedHashMap<String, Object>()
     def bungeeCordMetadata = new LinkedHashMap<String, Object>()
-    def velocityMetadata = new LinkedHashMap<String, Object>()
-
-    def id(String id) {
-        velocityMetadata["id"] = id
-    }
 
     def name(String name) {
         bukkitMetadata["name"] = name
         bungeeCordMetadata["name"] = name
-        velocityMetadata["name"] = name
     }
 
     def version(String version) {
         bukkitMetadata["version"] = version
         bungeeCordMetadata["version"] = version
-        velocityMetadata["version"] = version
     }
 
     def main(String main) {
         bukkitMetadata["main"] = main
         bungeeCordMetadata["main"] = main
-        velocityMetadata["main"] = main
     }
 
     def description(String description) {
         bukkitMetadata["description"] = description
         bungeeCordMetadata["description"] = description
-        velocityMetadata["description"] = description
     }
 
     def author(String author) {
@@ -48,7 +38,6 @@ class Metadata {
 
     def authors(List<String> authors) {
         bukkitMetadata["authors"] = authors
-        velocityMetadata["authors"] = authors
     }
 
     def contributors(List<String> contributors) {
@@ -57,7 +46,6 @@ class Metadata {
 
     def website(String website) {
         bukkitMetadata["website"] = website
-        velocityMetadata["url"] = website
     }
 
     def apiVersion(String apiVersion) {
@@ -115,17 +103,6 @@ class Metadata {
     def depend(List<String> depend) {
         bukkitMetadata["depend"] = depend
         bungeeCordMetadata["depends"] = depend
-    }
-
-    @ApiStatus.Experimental
-    def velocityDependencies(List<VelocityDependency> dependencies) {
-        def list = new ArrayList<Map<String, Object>>()
-
-        dependencies.forEach { d ->
-            list.add d.toMap()
-        }
-
-        velocityMetadata["dependencies"] = list
     }
 
     def softdepend(List<String> softdepend) {
