@@ -18,6 +18,7 @@ class CurtainGradleExtension {
 
     Repositories repositories = new Repositories(project.repositories)
 
+    @Deprecated
     Metadata metadata = new Metadata()
 
     Dependencies dependencies = new Dependencies()
@@ -30,6 +31,7 @@ class CurtainGradleExtension {
         action.execute repositories
     }
 
+    @Deprecated
     def metadata(Action<? super Metadata> action) {
         action.execute metadata
     }

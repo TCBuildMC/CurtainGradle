@@ -8,6 +8,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 
+@Deprecated
 class MetadataTask extends DefaultTask {
     @Input
     String fileName

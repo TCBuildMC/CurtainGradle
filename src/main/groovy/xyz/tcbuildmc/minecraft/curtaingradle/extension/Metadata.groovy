@@ -1,12 +1,12 @@
 package xyz.tcbuildmc.minecraft.curtaingradle.extension
 
-
 import org.jetbrains.annotations.ApiStatus
 import xyz.tcbuildmc.minecraft.curtaingradle.util.BasePermission
 import xyz.tcbuildmc.minecraft.curtaingradle.util.BukkitCommandContext
 import xyz.tcbuildmc.minecraft.curtaingradle.util.BukkitPermissionContext
 import xyz.tcbuildmc.minecraft.curtaingradle.util.PluginLoadOrder
 
+@Deprecated
 class Metadata {
     def bukkitMetadata = new LinkedHashMap<String, Object>()
     def bungeeCordMetadata = new LinkedHashMap<String, Object>()

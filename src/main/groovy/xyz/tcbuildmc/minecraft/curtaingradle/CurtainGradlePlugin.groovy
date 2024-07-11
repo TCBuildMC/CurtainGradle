@@ -32,9 +32,13 @@ class CurtainGradlePlugin implements Plugin<Project> {
         def extension = project.extensions.create "curtainGradle", CurtainGradleExtension, project
 
         def bukkitLibrary = project.configurations.maybeCreate "bukkitLibrary"
+
+        @Deprecated
         def bukkitMetadata = project.tasks.register("bukkitMetadata", MetadataTask) {
             fileName = "plugin.yml"
         }
+
+        @Deprecated
         def bungeeCordMetadata = project.tasks.register("bungeeCordMetadata", MetadataTask) {
             fileName = "bungee.yml"
         }
