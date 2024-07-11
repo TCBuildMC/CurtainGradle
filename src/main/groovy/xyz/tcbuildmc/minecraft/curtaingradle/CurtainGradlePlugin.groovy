@@ -72,7 +72,12 @@ class CurtainGradlePlugin implements Plugin<Project> {
         project.tasks.named(JavaPlugin.COMPILE_JAVA_TASK_NAME).get().dependsOn(project.tasks.named(BasePlugin.CLEAN_TASK_NAME))
 
         project.afterEvaluate {
-            setupIdea project, prepareServer.get()
+            setupIdea project
+
+            repositories {
+                extension.repositories.jitpack()
+                extension.repositories.sonatype()
+            }
 
             bukkitMetadata.configure {
                 meta = extension.metadata.bukkitMetadata
@@ -154,7 +159,7 @@ class CurtainGradlePlugin implements Plugin<Project> {
                 "org.scala-lang:scala-reflect:${version}")
     }
 
-    private void setupIdea(Project project, Task... tasks) {
+    private void setupIdea(Project project) {
         project.extensions.getByType(IdeaModel).module {
             excludeDirs.addAll(project.files(".gradle", "build", ".idea", "out").files)
             downloadJavadoc = true
