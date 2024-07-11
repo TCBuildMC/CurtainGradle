@@ -74,11 +74,6 @@ class CurtainGradlePlugin implements Plugin<Project> {
         project.afterEvaluate {
             setupIdea project
 
-            repositories {
-                extension.repositories.jitpack()
-                extension.repositories.sonatype()
-            }
-
             bukkitMetadata.configure {
                 meta = extension.metadata.bukkitMetadata
             }
