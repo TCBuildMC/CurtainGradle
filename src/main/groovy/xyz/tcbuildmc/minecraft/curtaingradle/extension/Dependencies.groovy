@@ -28,4 +28,8 @@ class Dependencies {
     String velocityApi(String version) {
         return "com.velocitypowered:velocity-api:${version}"
     }
+
+    String devMetadata(String commit) {
+        return "com.github.TCBuildMC:DevMetadata:${commit}"
+    }
 }
